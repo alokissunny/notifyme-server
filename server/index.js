@@ -18,15 +18,10 @@ app.use(BodyParser.json());
 app.use(BodyParser.urlencoded({ extended: true }));
 
 app.post("/topic",topicController.addTopic);
-app.post("/person", async (request, response) => {
-    try {
-        var person = new PersonModel(request.body);
-        var result = await person.save();
-        response.send(result);
-    } catch (error) {
-        response.status(500).send(error);
-    }
-});
+app.delete("/topic/:id",topicController.deleteTopic);
+app.get("/getAllTopics", topicController.getAllTopics);
+app.get("/getTopic",topicController.getTopic);
+
 app.post("/person", async (request, response) => {
     try {
         var person = new PersonModel(request.body);

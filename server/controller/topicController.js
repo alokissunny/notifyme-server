@@ -1,25 +1,32 @@
 const topic = require('../model/topics');
 const Mongoose = require("mongoose");
-var url = "mongodb+srv://Notifyme:Codejam@12@cluster0-yb1jm.mongodb.net/test?retryWrites=true&w=majority";
-Mongoose.connect(url,{
+const config = require('../config');
+Mongoose.connect(config.database,{
     useNewUrlParser: true
   });
-
-const TopicModel = Mongoose.model("topic", {
-    name :String,
-    creationDate : Date ,
-    expirationDate : Date,
-    subscribers : []
-});
+var Schema = Mongoose.Schema;
+var topicSchema = new Schema(topic.topic)
+const TopicModel = Mongoose.model("topic", topicSchema);
 exports.addTopic =  async function (request,response) {
     try {
-        request.body.creationDate = new Date().getTime();
         var topic = new TopicModel(request.body);
         var result = await topic.save();
         response.send(result);
     } catch (error) {
         response.status(500).send(error);
     }
+}
+exports.deleteTopic = async function (request, response) {
+    try {
+        var result = await TopicModel.deleteOne({ _id: request.params.id }).exec();
+        response.send(result);
+    } catch (error) {
+        response.status(500).send(error);
+    }
+};
+exports.getAllTopics = async function (request , response) {
 
+}
+exports.getTopic = async function ( request , response) {
 
 }
