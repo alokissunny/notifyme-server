@@ -1,28 +1,33 @@
-var firebase = require("firebase/app");
-var admin = require("firebase-admin");
+const subs = require('../model/subscription')
+const Mongoose = require("mongoose");
+const config = require('../config');
+Mongoose.connect(config.database,{
+    useNewUrlParser: true
+  });
+  var Schema = Mongoose.Schema;
+  var subsSchema = new Schema(subs.subscription)
+  const subscriptionModel = Mongoose.model("subscription", subsSchema);
 
-var serviceAccount = require("../private/serviceAccountKey");
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://test-285b5.firebaseio.com"
-});
 
 exports.subscribe = async function(req, res ) {
-admin.messaging().subscribeToTopic(req.body.registrationTokens, req.body.topic)
-  .then(function(response) {
-    // See the MessagingTopicManagementResponse reference documentation
-    // for the contents of response.
-    console.log('Successfully subscribed to topic:', response);
-    res.send(response)
-  })
-  .catch(function(error) {
-    console.log('Error subscribing to topic:', error);
-    res.status(500).send(error);
-  });
+    try {
+        var subscription = subscriptionModel(req.body);
+        var result = await subscription.save();
+        res.send(result);
+    } catch (error) {
+        res.status(500).send(error)
+    }
+   
 }
 exports.unsubscribe = async function(req, res ) {
 
+    try {
+        var result = subscriptionModel.deleteOne({_id : req.params.id}).exec();
+        res.send(result);
+
+    } catch (error) {
+        res.status(500).send(error);
+    }
 }
 exports.publish = async function (res, res ) {
     

@@ -24,7 +24,7 @@ app.get("/getAllTopics", topicController.getAllTopics);
 app.get("/getTopic",topicController.getTopic);
 
 app.post("/subscribe",messageController.subscribe);
-app.post("/unsubscribe",messageController.unsubscribe);
+app.delete("/unsubscribe/:id",messageController.unsubscribe);
 app.post("/publish",messageController.publish);
 
 
