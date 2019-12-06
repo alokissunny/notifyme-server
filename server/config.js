@@ -9,3 +9,5 @@ exports.firebaseConfig =  {
     appId: "app-id",
     measurementId: "G-measurement-id",
   };
+
+exports.vapidKeys = '';
