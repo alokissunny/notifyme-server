@@ -6,5 +6,6 @@ exports.topic =  {
     icon: String,
     details : String,
     providerName : String,
-    ProviderDetail : String
+    ProviderDetail : String,
+    categoryId: String
 }

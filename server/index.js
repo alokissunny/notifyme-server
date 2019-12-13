@@ -20,8 +20,10 @@ app.use(BodyParser.urlencoded({ extended: true }));
 
 app.post("/topic",topicController.addTopic);
 app.delete("/topic/:id",topicController.deleteTopic);
-app.get("/getAllTopics", topicController.getAllTopics);
+app.get("/getAllTopics/:id", topicController.getAllTopics);
 app.get("/getTopic",topicController.getTopic);
+app.get("/getCategories",topicController.getAllCatergories);
+
 
 app.post("/subscribe",messageController.subscribe);
 app.delete("/unsubscribe/:id",messageController.unsubscribe);
