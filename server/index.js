@@ -1,19 +1,20 @@
 const Express = require("express");
 const Mongoose = require("mongoose");
 const BodyParser = require("body-parser");
+
+var cors = require('cors')
+
+
 const topicController = require('./controller/topicController')
-// var url = "mongodb+srv://Notifyme:Codejam@12@cluster0-yb1jm.mongodb.net/test?retryWrites=true&w=majority";
-// Mongoose.connect(url,{
-//     useNewUrlParser: true
-//   });
+
 
 const messageController = require('./controller/messageController');
+
+const fireBaseController = require('./controller/firebaseController');
 var app = Express();
 
-// const PersonModel = Mongoose.model("person", {
-//     firstname: String,
-//     lastname: String
-// });
+app.use(cors())
+
 
 app.use(BodyParser.json());
 app.use(BodyParser.urlencoded({ extended: true }));
@@ -28,6 +29,10 @@ app.get("/getCategories",topicController.getAllCatergories);
 app.post("/subscribe",messageController.subscribe);
 app.delete("/unsubscribe/:id",messageController.unsubscribe);
 app.post("/publish",messageController.publish);
+
+app.post("/triggerSubscription",fireBaseController.subscribe);
+app.post("/notify",fireBaseController.notify);
+
 
 
 
@@ -70,8 +75,8 @@ app.post("/publish",messageController.publish);
 //     }
 // });
 
-app.listen(3000, () => {
-    console.log("Listening at :3000...");
+app.listen(3001, () => {
+    console.log("Listening at :3001...");
 });
 
 
